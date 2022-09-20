@@ -39,6 +39,31 @@ function flatten(unflatObject) {
 }
 
 // Problem 4: Complete the unflatten function that takes a JS Object, returns a JS Object in unflatten format
-function unflatten(flatObject) {
-  // Write your code here
+function unflatten(data) {
+  const keys = Object.keys(data);
+
+function assign(obj, keyPath, value) {
+  lastKeyIndex = keyPath.length - 1;
+  for (var i = 0; i < lastKeyIndex; ++i) {
+    key = keyPath[i];
+    if (!(key in obj)) {
+      obj[key] = {};
+    }
+    obj = obj[key];
+  }
+  obj[keyPath[lastKeyIndex]] = value;
+}
+
+const final = keys.reduce((acc, cv) => {
+  if (!cv.includes('.')) {
+    acc[cv] = data[cv];
+  }
+
+  const lastKeys = cv.split('.');
+  assign(acc, lastKeys, data[cv]);
+
+  return acc;
+}, {});
+
+return final;
 }
